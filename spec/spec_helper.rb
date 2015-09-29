@@ -53,12 +53,3 @@ Capybara.run_server = false
 RSpec.configure do |config|
   config.run_all_when_everything_filtered = true
 end
-
-def alert_present?
-  begin
-    page.driver.browser.switch_to.alert
-    return true
-  rescue
-    return false
-  end
-end

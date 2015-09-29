@@ -10,4 +10,11 @@ namespace :intergration do
 		setup_ii_environment(args)
 		exec "bundle exec rspec #{files.join(' ')}"
 	end	
+
+		task :smoke, :browser, :stack do |t, args|
+		ENV['BROWSER_TYPE'] = args[:browser]
+		files = Dir['spec/features/smoke_test/smokeTest.rb']
+		setup_ii_environment(args)
+		exec "bundle exec rspec #{files.join(' ')}"
+	end	
 end
