@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'Testing the Landing Page' , :type => :feature do
   
   before :each do
-    visit("https://@instantink-pie1.hpconnectedpie.com/us/en")
+    visit(ENV['LANDING_PAGE'])
     if ENV['BROWSER_TYPE'] == 'ie'
    		page.driver.execute_script("document.getElementById('overridelink').click()")
     end
@@ -16,7 +16,6 @@ describe 'Testing the Landing Page' , :type => :feature do
    	find_link('login').click()
    	fill_in 'signinEmail', :with => 'example@admin.com'
 
-    visit("https://instantink-pie1.hpconnectedpie.com/admins/sign_in")
 
   end  
 end
