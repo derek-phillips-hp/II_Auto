@@ -7,7 +7,7 @@ namespace :intergration do
 	task :basic, :browser, :stack do |t, args|
 		ENV['BROWSER_TYPE'] = args[:browser]
 		files = Dir['spec/features/*.rb']
-		Environment.setup_ii_environment(args)
+		setup_ii_environment(args)
 		exec "bundle exec rspec #{files.join(' ')}"
 	end	
 end
