@@ -12,29 +12,34 @@ describe 'Testing the Landing Page' , :type => :feature do
   it "Preforming the Smoke Test" do
    	
    	puts "Testing the Landing Page"
+
    	find(:xpath, '/html/body/div[6]/div/div[3]/div[2]/div[4]/div/a').click()
 
-
    	puts "Testing the Create Account Page"
+
    	fill_in 'signupEmail',     :with => new_User_Name
    	fill_in 'firstName',       :with => 'Otto'
    	fill_in 'lastName',        :with => 'Tester'
    	fill_in 'password',        :with => 'aio1test'
    	fill_in 'confirmPassword', :with => 'aio1test'
-
    	create_User_Terms_Checkbox
-
    	click_button 'signupSubmit'
-
    	find(:xpath, '/html/body/div[5]/div[2]/a').click()
 
    	puts "Testing Pick a Plan Page"
+
    	fill_in 'code', :with => ENV['ENROLLMENT_KEY']
    	find(:xpath, '//*[@id="code-form"]/div[1]/input[2]').click()
+   	find_field("plan-1-input").should be_checked
    	find(:xpath, '//*[@id="signup-step-one"]/div[3]/div[2]/a[2]').click()
 
    	puts "Testing Add a Printer Page"
-   	
+
+   	fill_in 'code', :with =>'4346outi86oof'
+   	find(:xpath, '//*[@id="add-printer-box"]/div/div/div/div[3]/a[2]').click()
+   	find_field('printer_id').should be_checked
+   	find(:xpath, '//*[@id="signup-step-two"]/div[3]/form/div[2]/input').click()
+
   end
 
 end
