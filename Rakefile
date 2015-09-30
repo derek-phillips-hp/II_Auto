@@ -1,7 +1,7 @@
 require './assets/environment.rb'
 include Environment
 
-namespace :intergration do
+namespace :integration do
 	desc 'Execute basic intergration tests suite.'
 
 	task :basic, :browser, :stack do |t, args|

@@ -3,7 +3,7 @@ require './support/support.rb'
 
 include Support
 
-describe 'Testing the Landing Page' , :type => :feature do
+describe 'Testing Instant Ink' , :type => :feature do
   
   before :all do
   	launch_Landing_Page
@@ -13,32 +13,34 @@ describe 'Testing the Landing Page' , :type => :feature do
    	
    	puts "Testing the Landing Page"
 
-   	find(:xpath, '/html/body/div[6]/div/div[3]/div[2]/div[4]/div/a').click()
+  	click_Button(:landingPage, :signUpBlueButton)
 
-   	puts "Testing the Create Account Page"
+  	puts "Testing the Create Account Page"
 
-   	fill_in 'signupEmail',     :with => new_User_Name
-   	fill_in 'firstName',       :with => 'Otto'
-   	fill_in 'lastName',        :with => 'Tester'
-   	fill_in 'password',        :with => 'aio1test'
-   	fill_in 'confirmPassword', :with => 'aio1test'
-   	create_User_Terms_Checkbox
-   	click_button 'signupSubmit'
-   	find(:xpath, '/html/body/div[5]/div[2]/a').click()
+  	fill_In(:signInPage, :signupEmail,     new_User_Name)
+	fill_In(:signInPage, :firstName,       'Otto')
+	fill_In(:signInPage, :lastName,        'Tester')
+	fill_In(:signInPage, :password,        'aio1test')
+	fill_In(:signInPage, :confirmPassword, 'aio1test')
+	create_User_Terms_Checkbox
 
-   	puts "Testing Pick a Plan Page"
+	click_Button(:signInPage, :signupSubmit)
+	click_Button(:signInPage, :yesItsCorrect)
 
-   	fill_in 'code', :with => ENV['ENROLLMENT_KEY']
-   	find(:xpath, '//*[@id="code-form"]/div[1]/input[2]').click()
-   	find_field("plan-1-input").should be_checked
-   	find(:xpath, '//*[@id="signup-step-one"]/div[3]/div[2]/a[2]').click()
+	puts "Testing Pick a Plan Page"
+   	
+   	fill_In(:planPage,                  :enrollCode, ENV['ENROLLMENT_KEY'])
+   	click_Button(:planPage,             :apply)
+   	is_Correct_Plan_Selected(:planPage, :planOneRaidoButton)
+   	click_Button(:planPage,             :continue)
 
    	puts "Testing Add a Printer Page"
 
-   	fill_in 'code', :with =>'4346outi86oof'
-   	find(:xpath, '//*[@id="add-printer-box"]/div/div/div/div[3]/a[2]').click()
-   	find_field('printer_id').should be_checked
-   	find(:xpath, '//*[@id="signup-step-two"]/div[3]/form/div[2]/input').click()
+   	fill_In(:printerPage,          :claimCode, '')
+   	click_Button(:printerPage,     :add)
+   	is_Printer_Added(:printerPage, :printerAdded)
+   	click_Button(:printerPage,     :continue)
+
 
   end
 
