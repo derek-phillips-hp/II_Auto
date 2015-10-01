@@ -1,4 +1,4 @@
-module Map
+module II_Map
 
 	MAP = {
 		landingPage:{
@@ -22,6 +22,8 @@ module Map
 		printerPage:{
 			claimCode:    '//*[@id="code"]',
 			add:          '//*[@id="add-printer-box"]/div/div/div/div[3]/a[2]',
+			cancel:       '//*[@id="add-printer-box"]/div/div/div/div[3]/a[1]',
+			localPrinter: '//*[@id="signup-step-two"]/div[3]/form/div[1]/p[3]/a',
 			printerAdded: '//*[@id="signup-step-two"]/div[3]/form/div[1]/ul/li/label/div',
 			contune:      '//*[@id="signup-step-two"]/div[3]/form/div[2]/input'
 		},
@@ -39,7 +41,7 @@ module Map
 		},
 		dashboard:{
 
-		}
+		},
 
 	}
 

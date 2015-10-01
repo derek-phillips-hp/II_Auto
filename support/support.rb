@@ -1,5 +1,5 @@
-require './support/uiMap.rb'
-include Map
+require './support/II_Map.rb'
+include II_Map
 
 module Support
 
