@@ -30,6 +30,15 @@ module Support
 		return find(:xpath, getXpath(page, id_name)).value == '1' ? true : false
 	end
 
+	def is_PGS_active?
+		begin 
+			find(:xpath, getXpath(:billingPage, :pgsEnterCreditCard))
+			return true
+		rescue
+			return false 
+		end
+	end
+
  	###############################
 	###  RANDOM HELPFUL METHODS ###
 	###############################
@@ -48,13 +57,16 @@ module Support
 	# Launches the landing page depending on arguments given
 	def launch_Landing_Page
 		visit(ENV['LANDING_PAGE'])
+		accept_auth_override
+		#page.find('#login')
+	end
+
+	def accept_auth_override
 		if ENV['BROWSER_TYPE'] == 'ie' and (ENV['STACK'] == 'pie1' or ENV['STACK'] == 'test1')
 			page.driver.execute_script("document.getElementById('overridelink').click()")
 			sleep 3
 		end
-		#page.find('#login')
 	end
-
 
 	# Creates a random Email addres corresponding to the stack 
 	def new_User_Name
@@ -84,9 +96,9 @@ module Support
 		find(:xpath, getRailsXpath(:printerCreation, :addPrinter)).click()
 	end
 
-	def select_State(page, state)
-		find(:xpath, getXpath(page, :stateDropDpwn)).click()
-		find(:xpath, getXpath(page, state)).click()
+	def select_item_from_dropdown(page, dropdown, name_id)
+		find(:xpath, getXpath(page, dropdown)).click()
+		find(:xpath, getXpath(page, name_id)).click()
 	end
 	
 end

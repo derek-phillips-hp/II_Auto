@@ -56,9 +56,9 @@ describe 'Testing Instant Ink' , :type => :feature do
 		fill_In(:shippingPage,:city,'San Diego')
 		select_State(:shippingPage, :california)
 		fill_In(:shippingPage, :zipCode, '92127')
+		click_Button(:shippingPage, :continue)
 	end
-	
-	click_Button(:shippingPage, :continue)
+
   end
 
 end

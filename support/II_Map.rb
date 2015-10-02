@@ -40,7 +40,25 @@ module II_Map
 			continue:      '//*[@id="saveUpdate"]'
 		},
 		billingPage:{
-
+			pgsEnterCreditCard:    '//*[@id="pgs-credit-card"]/div[2]/a',
+			pgsFirstName:          '//*[@id="first-name"]',
+			pgsLastName:           '//*[@id="last-name"]',
+			pgsCardNumber:         '//*[@id="credit-card-number"]',
+			pgsExpirationDropDown: '//*[@id="card-month"]',
+			pgs_12th_month:        '//*[@id="card-month"]/option[13]',
+			pgsYearDropDown:       '//*[@id="card-year"]',
+			pgs_Year_2030:         '//*[@id="card-year"]/option[17]',
+			pgsCVV:                '//*[@id="cvv"]',
+			pgsPhoneNumber:        '//*[@id="phone"]',
+			pgsContinue:           '//*[@id="continue-button"]',
+			sfAddPrepaidCard:      '//*[@id="prepaid-add"]',
+			sfNameOnCard:          '//*[@id="billing_form_content"]/div[1]/div[2]/div/input',
+			sfCardNumber:          '//*[@id="billing_form_content"]/div[1]/div[3]/div/input',
+			sfExpirationDropDown:  '//*[@id="s2id_autogen1"]/a',
+			sf_12th_month:         '//*[@id="billing_form_content"]/div[1]/div[5]/div/div/select[1]/option[13]',
+			sfYearDropDown:        '//*[@id="s2id_autogen3"]/a',
+			sf_Year_2034:          '//*[@id="billing_form_content"]/div[1]/div[5]/div/div/select[2]/option[21]',
+			sfCVV:                 '//*[@id="billing_form_content"]/div[1]/div[7]/div[1]/input'
 		},
 		reviewPage:{
 
