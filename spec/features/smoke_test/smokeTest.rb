@@ -8,6 +8,10 @@ describe 'Testing Instant Ink' , :type => :feature do
   before :all do
   	launch_Landing_Page
   end
+
+  after :all do 
+  	page.execute_script "window.close()"
+  end
   
   it "Preforming the Smoke Test" do
    	
@@ -36,12 +40,25 @@ describe 'Testing Instant Ink' , :type => :feature do
 
    	puts "Testing Add a Printer Page"
 
-   	fill_In(:printerPage,          :claimCode, '')
-   	click_Button(:printerPage,     :add)
+   	add_Local_Printer
+
+   	# for stage 1
+   	# fill_In(:printerPage,          :claimCode, '')
+   	# click_Button(:printerPage,     :add)
+
    	is_Printer_Added(:printerPage, :printerAdded)
-   	click_Button(:printerPage,     :continue)
+	click_Button(:printerPage,     :continue)
 
+	puts "Testing Add Shipping Address Page"
 
+	within_frame(find(:xpath, '//*[@id="edit-billing-inline-frame"]')) do
+		fill_In(:shippingPage,:streetAddress,"16399 West Bernardo Drive")
+		fill_In(:shippingPage,:city,'San Diego')
+		select_State(:shippingPage, :california)
+		fill_In(:shippingPage, :zipCode, '92127')
+	end
+	
+	click_Button(:shippingPage, :continue)
   end
 
 end

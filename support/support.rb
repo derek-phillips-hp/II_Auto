@@ -1,8 +1,13 @@
 require './support/II_Map.rb'
+require './support/railsAdmin_Map.rb'
+
 include II_Map
+include RailsAdmin_Map
 
 module Support
 
+
+	### Helper Methods to make top level tests more readable ###
 
 	def click_Button( page, id_name)
 		find(:xpath, getXpath(page, id_name)).click()
@@ -16,9 +21,17 @@ module Support
 		find(:xpath, getXpath(page, id_name)).checked?
 	end
 
+	def is_Printer_Added(page, id_name)
+		find(:xpath, getXpath(page, id_name)).visible?
+	end
+
+	def is_Correct_Plan_Selected(page, id_name)
+		sleep 1
+		return find(:xpath, getXpath(page, id_name)).value == '1' ? true : false
+	end
 
  	###############################
-	### RANDOM HELPFUL MENTHODS ###
+	###  RANDOM HELPFUL METHODS ###
 	###############################
 
 
@@ -37,9 +50,9 @@ module Support
 		visit(ENV['LANDING_PAGE'])
 		if ENV['BROWSER_TYPE'] == 'ie' and (ENV['STACK'] == 'pie1' or ENV['STACK'] == 'test1')
 			page.driver.execute_script("document.getElementById('overridelink').click()")
-			sleep 2
+			sleep 3
 		end
-		page.find('#login')
+		#page.find('#login')
 	end
 
 
@@ -58,13 +71,22 @@ module Support
 		end
 	end
 
-	def is_Printer_Added(page, id_name)
-		find(:xpath, getXpath(page, id_name)).visible?
-	end
-
-	def is_Correct_Plan_Selected(page, id_name)
+	# Adds a virtual local printer on test1 and pie1 
+	def add_Local_Printer
+		find(:xpath, getXpath(:printerPage, :cancel)).click()
 		sleep 1
-		return find(:xpath, getXpath(page, id_name)).value == '1' ? true : false
+		find(:xpath, getXpath(:printerPage, :localPrinter)).click()
+		
+		find(:xpath, getRailsXpath(:printerCreation, :serialNumber)).set(rand(10000).to_s+'OTTOTEST'+rand(10000).to_s)
+		find(:xpath, getRailsXpath(:printerCreation, :deviceImmutableId)).set(rand(10000).to_s+'OTTOTEST'+rand(10000).to_s)
+		find(:xpath, getRailsXpath(:printerCreation, :cloudPrinterIdentifier)).set(rand(10000).to_s+'OTTOTEST'+rand(10000).to_s)
+
+		find(:xpath, getRailsXpath(:printerCreation, :addPrinter)).click()
 	end
 
+	def select_State(page, state)
+		find(:xpath, getXpath(page, :stateDropDpwn)).click()
+		find(:xpath, getXpath(page, state)).click()
+	end
+	
 end
