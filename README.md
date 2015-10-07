@@ -13,11 +13,11 @@ After you make a clone of this project. Go to the root directory of the project
 * create a folder called assets
 * save the ChromeDriver and Internet Explorer Driver in this folder
 * Now you will need to add the path to these Drivers to the Envirnement Variable called PATH.
-* * open up folder explorer and right click My Pc ->  Properties
-* * click Advance System Settings -> Environment Variables
-* * in the System Variables locate Path and click edit
-* * add the path to the Drivers to the end of this variable 
-* * make sure you start with a ; 
+  * open up folder explorer and right click My Pc ->  Properties
+  * click Advance System Settings -> Environment Variables
+  * in the System Variables locate Path and click edit
+  * add the path to the Drivers to the end of this variable 
+  * make sure you start with a ; 
 
 Message Derek Phillips or Michael Aranda to recieve the environment.rb file.
   * palce this file in the assets/ folder
