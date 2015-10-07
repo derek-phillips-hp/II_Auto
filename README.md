@@ -7,17 +7,17 @@ Download ChromeDriver - http://chromedriver.storage.googleapis.com/index.html?pa
 Download Internet Explorer Driver - http://selenium-release.storage.googleapis.com/index.html?path=2.39/ 
                                   - stable version (Windows OS Only)
 
-  With the ChromeDriver and IEDriver you need to save these in the same location.
-  After you make a clone of this project. Go to the root directory of the project
-    * II_Auto/
-    * create a folder called assets
-    * save the ChromeDriver and Internet Explorer Driver in this folder
-    * Now you will need to add the path to these Drivers to the Envirnement Variable called PATH.
-        * open up folder explorer and right click My Pc ->  Properties
-        * click Advance System Settings -> Environment Variables
-        * in the System Variables locate Path and click edit
-        * add the path to the Drivers to the end of this variable 
-        * make sure you start with a ; 
+With the ChromeDriver and IEDriver you need to save these in the same location.
+After you make a clone of this project. Go to the root directory of the project
+* II_Auto/
+* create a folder called assets
+* save the ChromeDriver and Internet Explorer Driver in this folder
+* Now you will need to add the path to these Drivers to the Envirnement Variable called PATH.
+* * open up folder explorer and right click My Pc ->  Properties
+* * click Advance System Settings -> Environment Variables
+* * in the System Variables locate Path and click edit
+* * add the path to the Drivers to the end of this variable 
+* * make sure you start with a ; 
 
 Message Derek Phillips or Michael Aranda to recieve the environment.rb file.
   * palce this file in the assets/ folder
