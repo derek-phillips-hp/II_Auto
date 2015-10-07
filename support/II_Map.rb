@@ -36,6 +36,7 @@ module II_Map
 			city:          '//*[@id="billing_form_content"]/div[2]/div[3]/div/input',
 			stateDropDpwn: '//*[@id="s2id_autogen3"]/a',
 			california:    '//*[@id="select2-results-4"]/li[6]',
+			wyoming:       '//*[@id="select2-results-4"]/li[51]',
 			zipCode:       '//*[@id="billing_form_content"]/div[2]/div[4]/div/input[1]',
 			continue:      '//*[@id="saveUpdate"]'
 		},
@@ -51,6 +52,7 @@ module II_Map
 			pgsCVV:                '//*[@id="cvv"]',
 			pgsPhoneNumber:        '//*[@id="phone"]',
 			pgsContinue:           '//*[@id="continue-button"]',
+			pgsSaveAndContinue:    '//*[@id="save-and-continue"]',
 			sfAddPrepaidCard:      '//*[@id="prepaid-add"]',
 			sfNameOnCard:          '//*[@id="billing_form_content"]/div[1]/div[2]/div/input',
 			sfCardNumber:          '//*[@id="billing_form_content"]/div[1]/div[3]/div/input',
@@ -61,17 +63,60 @@ module II_Map
 			sfCVV:                 '//*[@id="billing_form_content"]/div[1]/div[7]/div[1]/input'
 		},
 		reviewPage:{
+			planText:           '/html/body/div[6]/div/div[3]/div/div[1]/ol/li[1]/div[2]',
+			shippingText:       '/html/body/div[6]/div/div[3]/div/div[1]/ol/li[3]/div[2]',
+			billingCCText:      '//*[@id="billing-info"]/div[1]',
+			billingAddressText: '//*[@id="billing-info"]/div[2]',
+			promoCode:          '//*[@id="promotion"]',
+			promoApply:         '/html/body/div[6]/div/div[3]/div/div[1]/ol/li[5]/div[2]/div/span/input[2]',
+			promoAccepted:      '/html/body/div[6]/div/div[3]/div/div[1]/ol/li[5]/div[2]/div/div/div/div[2]',
+			enrollmentKeyInfo:  '/html/body/div[6]/div/div[3]/div/div[1]/ol/li[6]/div[2]/div/table[1]/tbody[1]/tr[2]',
+			promoCodeInfo:      '/html/body/div[6]/div/div[3]/div/div[1]/ol/li[6]/div[2]/div/table[1]/tbody[3]/tr[1]',
+			tosCheckBox:        '//*[@id="subscription_accepted_terms_and_conditions"]',
+			enroll:             '//*[@id="enroll-button"]'
 
 		},
 		thankyouPage:{
-
+			viewAccountPage: '//*[@id="dashboard-button"]'
 		},
 		dashboard:{
-			shippingBilling: '/html/body/div[6]/div/div/div[4]/div[1]',
-			editShipping:    '//*[@id="shipping-info"]/div[2]/a',
-			stateDropDpwn:   '//*[@id="select2-drop"]'
-		}
+			signOut: '//*[@id="logout"]',
 
+			statusInfo:    '//*[@id="printer-status"]',
+			enrolledPlan:  '//*[@id="printer-status"]/ul/li[4]',
+			accountNumber: '//*[@id="printer-status"]/ul/li[5]/span',
+
+			shippingBilling: '/html/body/div[6]/div/div/div[4]/div[1]',
+			
+			shippingInfo:       '//*[@id="shipping-info"]/div[1]',
+			editShipping:       '//*[@id="shipping-info"]/div[2]/a',
+			editFirstName:      '//*[@id="billing_form_content"]/div[1]/div[1]/div/input',
+			editLastName:       '//*[@id="billing_form_content"]/div[1]/div[2]/div/input',
+			editShippingSave:   '//*[@id="billing_form_confirm_btn_box"]/div/span/button[2]',
+			editShippingCancel: '//*[@id="billing_form_confirm_btn_box"]/div/span/button[1]',
+			
+			editBilling: '//*[@id="edit-credit-card"]',
+			billingInfo: '//*[@id="payment-info"]',
+                     
+			myPlan:           '/html/body/div[6]/div/div/div[5]',
+			planInfo:         '//*[@id="outer-my-plan-content"]/div/table/tbody/tr[2]/td/div',
+			editPlan:         '//*[@id="outer-my-plan-content"]/div/table/tbody/tr[1]/td/table/tbody/tr/td[2]/a',
+			planOne:          '//*[@id="plan-1-input"]',
+			planTwo:          '//*[@id="plan-2-input"]',
+			planThree:        '//*[@id="plan-3-input"]',
+			changePlan:       '//*[@id="edit-plan-modal"]/div/div/div/div[3]/a[1]',
+			cancelPlanChange: '//*[@id="edit-plan-modal"]/div/div/div/div[3]/a[2]',
+
+			printingHistory: '/html/body/div[6]/div/div/div[6]',
+
+			activity:   '/html/body/div[6]/div/div/div[7]',
+			firstEntryDescription: '//*[@id="activity-content"]/table/tbody/tr/td[2]',
+
+			support:                    '/html/body/div[6]/div/div/div[8]',
+			cancelEnrollment:           '//*[@id="support-content"]/div/div[1]/div[3]/a',
+			cancelEnrollmentBlueButton: '//*[@id="cancel-enrollment-modal"]/div/div/div/div[3]/a[1]',
+			keepEnrollment:             '//*[@id="cancel-enrollment-modal"]/div/div/div/div[3]/a[2]'
+		}
 	}
 
 	def getXpath( page, id_name)

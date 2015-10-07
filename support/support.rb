@@ -17,17 +17,35 @@ module Support
 		find(:xpath, getXpath(page, id_name)).set(text)
 	end
 
+	def find_Text(page, id_name)
+		return find(:xpath, getXpath(page, id_name)).text
+	end
+
 	def verify_Checkbox_RaidoButton_selected(page, id_name)
 		find(:xpath, getXpath(page, id_name)).checked?
 	end
 
-	def is_Printer_Added(page, id_name)
-		find(:xpath, getXpath(page, id_name)).visible?
+	def is_css_visible?(page, id_name)
+		return find(:xpath, getXpath(page, id_name)).visible?
 	end
 
 	def is_Correct_Plan_Selected(page, id_name)
 		sleep 1
 		return find(:xpath, getXpath(page, id_name)).value == '1' ? true : false
+	end
+
+	def is_text_correct?(page, id_name, expected_text)
+		if find(:xpath, getXpath(page, id_name)).has_text?(expected_text)
+			return true
+		else
+			puts 'Expected Text: ' + expected_text
+			puts 'Actual Text  : ' + find(:xpath, getXpath(page, id_name)).text
+			return false
+		end
+	end
+
+	def check_checkbox(page, id_name)
+		find(:xpath, getXpath(page, id_name)).set(true)
 	end
 
 	def is_PGS_active?
@@ -57,20 +75,25 @@ module Support
 	# Launches the landing page depending on arguments given
 	def launch_Landing_Page
 		visit(ENV['LANDING_PAGE'])
-		accept_auth_override
+		#accept_auth_override
 		#page.find('#login')
 	end
 
 	def accept_auth_override
-		if ENV['BROWSER_TYPE'] == 'ie' and (ENV['STACK'] == 'pie1' or ENV['STACK'] == 'test1')
-			page.driver.execute_script("document.getElementById('overridelink').click()")
-			sleep 3
+		begin 
+			page.find('#login')
+			return true
+		rescue
+			if ENV['BROWSER_TYPE'] == 'ie' and (ENV['STACK'] == 'pie1' or ENV['STACK'] == 'test1')
+				page.driver.execute_script("document.getElementById('overridelink').click()")
+				sleep 3
+			end
 		end
 	end
 
 	# Creates a random Email addres corresponding to the stack 
 	def new_User_Name
-		return 'ot1to.smoketest'+rand(5000).to_s+'.'+ENV['stack']+'.'+rand(5000).to_s+'@gmail.com'
+		return 'ot1to.smoketest+'+rand(5000).to_s+'.'+ENV['stack']+'.'+rand(5000).to_s+'@gmail.com'
 	end
 
 	# Overrides the javascript created checkbox that Selenium can not trigger 
@@ -101,4 +124,51 @@ module Support
 		find(:xpath, getXpath(page, name_id)).click()
 	end
 	
+	def has_page_finished_loading?(page, name_id)
+		@i = 0
+		while @i < 10 do
+			begin
+				is_css_visible?(page, name_id)
+				return true
+			rescue
+				sleep 1
+			end
+			@i += 1
+		end
+		# assert error 
+	end
+
+
+	###############################
+	###   RAILS ADMIN METHODS   ###
+	###############################
+
+	def admin_sign_in(url, page)
+		visit(url)
+		find(:xpath, getRailsXpath(page, :userName)).set(ENV['ADMIN_USER'] )
+		find(:xpath, getRailsXpath(page, :password)).set(ENV['ADMIN_PASSWORD'])
+		find(:xpath, getRailsXpath(page, :logIn)).click()
+	end
+
+	def agena_Sign_In
+		admin_sign_in(ENV['AGENA_ADMIN'], :agenaAdmin)
+	end
+
+	def gemini_Sign_In
+		admin_sign_in(ENV['GEMINI_ADMIN'], :geminiAdmin)
+	end
+
+	def unRedeem_Enrollment_Key
+		visit(ENV['ENROLLMENT_KEY_URL'])
+		find(:xpath, getRailsXpath(:redeemEK, :unRedeem)).click()
+		puts find(:xpath, getRailsXpath(:redeemEK, :unRedeemResult)).text
+	end
+
+	def obsolete_Subscription(sub_number)
+		visit(ENV['OBSOLETE_SUB']+sub_number)
+		find(:xpath, getRailsXpath(:obsoleteSub, :obsolete)).click()
+		puts find(:xpath, getRailsXpath(:obsoleteSub, :status)).text
+	end
+
+
 end
