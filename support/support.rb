@@ -35,13 +35,7 @@ module Support
 	end
 
 	def is_text_correct?(page, id_name, expected_text)
-		if find(:xpath, getXpath(page, id_name)).has_text?(expected_text)
-			return true
-		else
-			puts 'Expected Text: ' + expected_text
-			puts 'Actual Text  : ' + find(:xpath, getXpath(page, id_name)).text
-			return false
-		end
+		expect(find(:xpath, getXpath(page, id_name)).text).to eq expected_text
 	end
 
 	def check_checkbox(page, id_name)
@@ -54,6 +48,15 @@ module Support
 			return true
 		rescue
 			return false 
+		end
+	end
+
+	def is_User_Logged_In_With_A_Subscription?
+		begin
+			find(:xpath, getXpath(:dashboard, :shippingBilling))
+			return true
+		rescue
+			return false
 		end
 	end
 
@@ -126,18 +129,34 @@ module Support
 	
 	def has_page_finished_loading?(page, name_id)
 		@i = 0
-		while @i < 10 do
+		while @i < 60 do
 			begin
-				is_css_visible?(page, name_id)
+				sleep 10
+				is_css_visible?(page,name_id )
+				puts 'Can CSS be located? - True'
 				return true
 			rescue
-				sleep 1
+				puts 'Can CSS be located? - False'
 			end
-			@i += 1
+			@i += 3
 		end
 		# assert error 
 	end
 
+	def has_ThankYou_Page_Progress_Bar_Finished?
+		@i = 0
+		while @i < 60 do
+			begin
+				sleep 10
+				is_css_visible?(:thankyouPage,:progressBar )
+				puts "Progress Bar is Visible"
+			rescue
+				puts "progress Bar Finished"
+				break
+			end
+			@i += 3
+		end
+	end
 
 	###############################
 	###   RAILS ADMIN METHODS   ###

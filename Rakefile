@@ -15,6 +15,6 @@ namespace :integration do
 		ENV['BROWSER_TYPE'] = args[:browser]
 		files = Dir['spec/features/smoke_test/smokeTest.rb']
 		setup_ii_environment(args)
-		exec "bundle exec rspec #{files.join(' ')}"
+		exec "bundle exec rspec #{files.join(' ')} >> logs/test_#{ENV['STACK']}.log"
 	end	
 end

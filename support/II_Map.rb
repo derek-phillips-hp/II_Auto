@@ -77,6 +77,7 @@ module II_Map
 
 		},
 		thankyouPage:{
+			progressBar:     '//*[@id="cloud-kick-wait-modal"]/div',
 			viewAccountPage: '//*[@id="dashboard-button"]'
 		},
 		dashboard:{

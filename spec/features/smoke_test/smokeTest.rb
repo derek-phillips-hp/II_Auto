@@ -96,7 +96,8 @@ describe 'Testing Instant Ink' , :type => :feature do
         fill_In(:billingPage, :sfCVV ,'150')
       end
     end
-  
+   
+    sleep 10
     has_page_finished_loading?(:reviewPage, :planText)
 
     puts '### Testing Review Page ###'
@@ -133,7 +134,8 @@ describe 'Testing Instant Ink' , :type => :feature do
     check_checkbox(:reviewPage, :tosCheckBox)
     click_Button(:reviewPage, :enroll)
 
-    sleep 20
+    sleep 10
+    has_ThankYou_Page_Progress_Bar_Finished?
 
     click_Button(:thankyouPage, :viewAccountPage)
 
@@ -157,17 +159,20 @@ describe 'Testing Instant Ink' , :type => :feature do
          'Credit Card Visa xxxx-4113 Otto Tester 16399 West Bernardo Drive San Diego, CA 92127-1801 (619) 555-5555 Edit').to_s)
     
     click_Button(:dashboard, :myPlan)
-    
+    sleep 1
     puts 'Plan info:              '.concat(is_text_correct?(:dashboard, :planInfo, 
-         'Monthly pages 50 Rollover Pages Up to 50 Additional pages Set of 15 pages for $1.00').to_s)
+         'Monthly pages 50 Rollover Pages Up to 50 Additional pages Set of 15 pages for $1.00 2 months remaining with no charge for regular pages').to_s)
     
     click_Button(:dashboard, :activity)
     
     puts 'First Activity entry:   '.concat(is_text_correct?(:dashboard, :firstEntryDescription, 
          'Promotion (50 pages per month free for 1 month)').to_s)
+    
+    subscription_complete = true
 
     click_Button(:dashboard, :signOut)
-    has_page_finished_loading?(:landingPage, :signUpBlueButton)
+    sleep 2
+    is_css_visible?(:landingPage, :signUpBlueButton)
 
   end
 
@@ -179,12 +184,14 @@ describe 'Testing Instant Ink' , :type => :feature do
       launch_Landing_Page
       sleep 5
 
-      click_Button(:landingPage, :signInNavBar)
+      if !is_User_Logged_In_With_A_Subscription?
+        click_Button(:landingPage, :signInNavBar)
 
-      within_frame 'webauthPanelIFrame' do
-        fill_In(:landingPage, :signInEmail, user_name)
-        fill_In(:landingPage, :signInPassword, 'aio1test')
-        click_Button(:landingPage, :signInSubmit)
+        within_frame 'webauthPanelIFrame' do
+          fill_In(:landingPage, :signInEmail, user_name)
+          fill_In(:landingPage, :signInPassword, 'aio1test')
+          click_Button(:landingPage, :signInSubmit)
+        end
       end
 
       click_Button(:dashboard, :shippingBilling)
@@ -201,7 +208,6 @@ describe 'Testing Instant Ink' , :type => :feature do
         fill_In(:shippingPage, :city, 'San Diego')
         fill_In(:shippingPage, :zipCode, '92109')
         click_Button(:dashboard, :editShippingSave)
-        sleep 10
       end
 
       has_page_finished_loading?(:dashboard, :shippingBilling)
