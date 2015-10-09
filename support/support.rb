@@ -26,12 +26,12 @@ module Support
 	end
 
 	def is_css_visible?(page, id_name)
-		return find(:xpath, getXpath(page, id_name)).visible?
+		expect(find(:xpath, getXpath(page, id_name)).visible?).to eq true
 	end
 
 	def is_Correct_Plan_Selected(page, id_name)
 		sleep 1
-		return find(:xpath, getXpath(page, id_name)).value == '1' ? true : false
+		expect(find(:xpath, getXpath(page, id_name)).value).to eq '1'
 	end
 
 	def is_text_correct?(page, id_name, expected_text)
@@ -133,10 +133,8 @@ module Support
 			begin
 				sleep 10
 				is_css_visible?(page,name_id )
-				puts 'Can CSS be located? - True'
 				return true
 			rescue
-				puts 'Can CSS be located? - False'
 			end
 			@i += 3
 		end
@@ -149,9 +147,7 @@ module Support
 			begin
 				sleep 10
 				is_css_visible?(:thankyouPage,:progressBar )
-				puts "Progress Bar is Visible"
 			rescue
-				puts "progress Bar Finished"
 				break
 			end
 			@i += 3

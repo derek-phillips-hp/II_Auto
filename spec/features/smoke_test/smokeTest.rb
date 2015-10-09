@@ -3,37 +3,66 @@ require './support/support.rb'
 
 include Support
 
+##
+# => ONLY WORKS ON PIE1 and TEST1
+# => This Smoke Test simply tests the enrollment flow to see if is possible
+# => to complete an enrollment flow, then test certian parts of the Dashboard 
+#
+
 describe 'Testing Instant Ink' , :type => :feature do
   
+  ##
+  # =>             user_name: Creates the User Email address that will be used through out all the tests
+  # => subscription_complete: All tests after the Smoke tests are dependent on the fact that 
+  #                           the subscription was completed or not
+  # =>        account_number: Used in the deconstruction test to obsolete the subscription
+  #                           (If Rails admin access is given)
+
   user_name = new_User_Name
   subscription_complete = false
   account_number = ''
 
+
+
+  ##
+  # => Launches the landing page 
+  #
   before :all do
   	launch_Landing_Page
-    puts 'Creating a Smoke test for user: ' + user_name
   end
 
-  # after do
-  #   # after each test navigate away before Capybara tries to so that we can appropriately handle the onbeforeunload dialog
-  #   if @browser
-  #     begin
-  #       @browser.navigate.to("about:blank")
-  #       @browser.switch_to.alert.accept
-  #     rescue Selenium::WebDriver::Error::NoAlertPresentError
-  #       # No alert was present. Don't need to do anything
-  #     end
-  #   end
-  # end
+
+
+  ##
+  # => Prints out info gathered through out the test if aviable 
+  #
+  after :all do
+    puts ''
+    puts "Smoke Test on stack: #{ENV['STACK']}" 
+    puts 'User Email: ' + user_name
+    puts 'Account Number: ' + account_number
+    puts "Enrollment Key: #{ENV['ENROLLMENT_KEY']}"
+  end
   
   it "Preforming the Smoke Test for user: " + user_name do
    	pgs = true
 
-    puts '### Testing the Landing Page ###'
+    puts '#########################################'
+    puts '####### Testing the Landing Page  #######'
+    ##
+    # Landing page test. Only sees if the Sign up button is aviable 
+    # then clicks it.  
 
     click_Button(:landingPage, :signUpBlueButton)
 
-    puts '### Testing the Create Account Page ###'
+
+
+
+    puts '#########################################'
+    puts '### Testing the Create Account Page  ####'
+    ##
+    # => Creates a user and tests if the fields are editable
+    #
 
     fill_In(:signInPage, :signupEmail,     user_name)
     fill_In(:signInPage, :firstName,       'Otto')
@@ -45,22 +74,45 @@ describe 'Testing Instant Ink' , :type => :feature do
     click_Button(:signInPage, :signupSubmit)
     click_Button(:signInPage, :yesItsCorrect)
 
-    puts '### Testing Pick a Plan Page ###'
+
+
+
+    puts '#########################################'
+    puts '####### Testing Pick a Plan Page ########'
+    ##
+    # => Enters an enrollment Key and verifys that it selects the correct plan
+    #
 
     fill_In(:planPage,                  :enrollCode, ENV['ENROLLMENT_KEY'])
     click_Button(:planPage,             :apply)
-    puts 'IS correct plan selected?: '.concat(is_Correct_Plan_Selected(:planPage, :planOneRaidoButton).to_s)
+    is_Correct_Plan_Selected(:planPage, :planOneRaidoButton)
     click_Button(:planPage,             :continue)
 
-    puts '### Testing Add a Printer Page ###'
+
+
+
+    puts '#########################################'
+    puts '###### Testing Add a Printer Page #######'
+    ##
+    # => Uses the Local Printer Button to add a virtual printer to the test
+    # => and verifys that the printer was added correctly
+    #
 
     add_Local_Printer
 
-
-    puts 'Was Printer added? - '.concat(is_css_visible?(:printerPage, :printerAdded).to_s)
+    is_css_visible?(:printerPage, :printerAdded)
     click_Button(:printerPage,     :continue)
 
+
+
+    puts '#########################################'
     puts '### Testing Add Shipping Address Page ###'
+    ##
+    # => Enteres the Shipping address to the fileds given
+    # => Special notice to the drop downs. they are built off of
+    # => javascript and needed to click on the script diretly in order 
+    # => to activate the drop down
+    #
 
     within_frame(find(:xpath, '//*[@id="edit-billing-inline-frame"]')) do
       fill_In(:shippingPage,:streetAddress,"16399 West Bernardo Drive")
@@ -70,10 +122,25 @@ describe 'Testing Instant Ink' , :type => :feature do
       click_Button(:shippingPage, :continue)
     end
 
+
+
+
+    ##
+    # => Tests the Billing page
+    # => Deteremins which billing page is active
+    # => PGS or Snapfish
+    #
     sleep 3
-    
     if is_PGS_active?
-      puts'### Testing Billing with PGS ###'
+      
+
+      puts '#########################################'
+      puts '####### Testing Billing with PGS ########'
+      ##
+      # => PGS was Turned on thus was sent to a new url 
+      # => valid billing information was added to the account
+      #
+
       pgs = true 
       click_Button(:billingPage, :pgsEnterCreditCard)
       sleep 2
@@ -86,7 +153,15 @@ describe 'Testing Instant Ink' , :type => :feature do
       fill_In(:billingPage, :pgsPhoneNumber, '6195555555')
       click_Button(:billingPage, :pgsContinue)
     else
-      puts '### Testing billing with Snapfish - pgs was turned off ###'
+
+
+
+      puts '#########################################'
+      puts '##### Testing Billing with Snapfish #####'
+      ##
+      # =>  PGS was Turned Off and was not sent to a new url
+      # => valid billing inforamtion was added to the account
+
       pgs = false
       within_frame(find(:xpath, '//*[@id="edit-billing-inline-frame"]')) do
         fill_In(:billingPage, :sfNameOnCard, 'Otto')
@@ -99,90 +174,135 @@ describe 'Testing Instant Ink' , :type => :feature do
         click_Button(:billingPage, :sfSaveAndContinue)
       end
     end
-   
+
     sleep 10
+    
+
+
+
+    puts '#########################################'
+    puts '########## Testing Review Page ##########'
+    ##
+    # => Tests if all inforamtion that was entered in the past pages was 
+    # => correctly saved
+    #
+
+
     has_page_finished_loading?(:reviewPage, :planText)
 
-    puts '### Testing Review Page ###'
+    is_text_correct?(:reviewPage, :planText, 
+                     '$2.99 per month for 50 pages, +$1.00 for each additional set of 15 pages' )
 
-    puts 'Plan Text:              '.concat(is_text_correct?(:reviewPage, :planText, 
-         '$2.99 per month for 50 pages, +$1.00 for each additional set of 15 pages' ).to_s)
-
-    puts 'Shipping Text:          '.concat(is_text_correct?(:reviewPage, :shippingText, 
-         'Otto Tester 16399 West Bernardo Drive San Diego, CA 92127-1801' ).to_s)
+    is_text_correct?(:reviewPage, :shippingText, 
+                     'Otto Tester 16399 West Bernardo Drive San Diego, CA 92127-1801' )
 
     if pgs
-      puts 'Billing CC Text:        '.concat(is_text_correct?(:reviewPage, :billingCCText, 
-           'Visa Card Otto Tester xxxx-xxxx-xxxx-4113' ).to_s)
+      is_text_correct?(:reviewPage, :billingCCText, 
+                       'Visa Card Otto Tester xxxx-xxxx-xxxx-4113' )
     else
-      puts 'Billing CC Text:        '.concat(is_text_correct?(:reviewPage, :billingCCText, 
-           'Visa Card Otto Tester xxxx-xxxx-xxxx-1111' ).to_s)
+      is_text_correct?(:reviewPage, :billingCCText,
+                       'Visa Card Otto xxxx-xxxx-xxxx-1111' )
     end
 
-    puts 'Billing Address Text:   '.concat(is_text_correct?(:reviewPage, :billingAddressText, 
-         '16399 West Bernardo Drive San Diego, CA 92127-1801 (619) 555-5555' ).to_s)
+    is_text_correct?(:reviewPage, :billingAddressText, 
+                     '16399 West Bernardo Drive San Diego, CA 92127-1801 (619) 555-5555' )
 
     fill_In(:reviewPage, :promoCode, 'ALLREGIONS')
     click_Button(:reviewPage, :promoApply)
 
-    puts 'Promo Accepted:         '.concat(is_text_correct?(:reviewPage, :promoAccepted, 
-         'ALLREGIONS Promotion code applied' ).to_s)
+    is_text_correct?(:reviewPage, :promoAccepted, 
+                     'ALLREGIONS Promotion code applied' )
     
-    puts 'Enrollment Key Info:    '.concat(is_text_correct?(:reviewPage, :enrollmentKeyInfo, 
-         'Enrollment key 1 month - 50 pages per month' ).to_s)
+    is_text_correct?(:reviewPage, :enrollmentKeyInfo, 
+                     'Enrollment key 1 month - 50 pages per month' )
     
-    puts 'PromoCode Info:         '.concat(is_text_correct?(:reviewPage, :promoCodeInfo, 
-         'Promotion code (ALLREGIONS) 1 month - 50 pages per month free' ).to_s)
+    is_text_correct?(:reviewPage, :promoCodeInfo, 
+                     'Promotion code (ALLREGIONS) 1 month - 50 pages per month free' )
 
     check_checkbox(:reviewPage, :tosCheckBox)
     click_Button(:reviewPage, :enroll)
 
+
+
+
+    puts '#########################################'
+    puts '######## Testing Thank You Page #########'
+    ##
+    # => Verifying that the progress bar has finshed and click the 
+    # => View Account PAge button
+    #
+
     sleep 10
     has_ThankYou_Page_Progress_Bar_Finished?
-
     click_Button(:thankyouPage, :viewAccountPage)
+
+    
+
+
+    puts '#########################################'
+    puts '########### Testing Dashboard ###########'
+    ##
+    # => Testing that the Dash Board is convaying all the 
+    # => correct information that was given in the 
+    # => enrollment process
+    #
 
     subscription_complete = true
 
     has_page_finished_loading?(:dashboard, :shippingBilling)
-    puts '### Testing Dashboard ###'
 
     account_number = find_Text(:dashboard, :accountNumber)
     account_number = account_number[9, account_number.size]
 
-    puts 'Enrolled Plan:          '.concat(is_text_correct?(:dashboard, :enrolledPlan, 
-         'Enrolled in $2.99 plan').to_s)
+
+    is_text_correct?(:dashboard, :enrolledPlan,
+                     'Enrolled in $2.99 plan')
 
     click_Button(:dashboard, :shippingBilling)
 
-    puts 'Shipping info:          '.concat(is_text_correct?(:dashboard, :shippingInfo, 
-         'Otto Tester 16399 West Bernardo Drive San Diego, CA 92127-1801').to_s)
+    is_text_correct?(:dashboard, :shippingInfo,
+                     'Otto Tester 16399 West Bernardo Drive San Diego, CA 92127-1801')
 
-    puts 'Billing info:           '.concat(is_text_correct?(:dashboard, :billingInfo, 
-         'Credit Card Visa xxxx-4113 Otto Tester 16399 West Bernardo Drive San Diego, CA 92127-1801 (619) 555-5555 Edit').to_s)
-    
+    if pgs
+      is_text_correct?(:dashboard, :billingInfo, 
+                     'Credit Card Visa xxxx-4113 Otto Tester 16399 West Bernardo Drive San Diego, CA 92127-1801 (619) 555-5555 Edit')
+    else
+      is_text_correct?(:dashboard, :billingInfo, 
+                     'Credit Card Visa xxxx-1111 Otto 16399 West Bernardo Drive San Diego, CA 92127-1801 (619) 555-5555 Edit')
+    end
+
     click_Button(:dashboard, :myPlan)
+
     sleep 1
-    puts 'Plan info:              '.concat(is_text_correct?(:dashboard, :planInfo, 
-         'Monthly pages 50 Rollover Pages Up to 50 Additional pages Set of 15 pages for $1.00 2 months remaining with no charge for regular pages').to_s)
-    
+
+    is_text_correct?(:dashboard, :planInfo,
+                     'Monthly pages 50 Rollover Pages Up to 50 Additional pages Set of 15 pages for $1.00 2 months remaining with no charge for regular pages')
+
     click_Button(:dashboard, :activity)
-    
-    puts 'First Activity entry:   '.concat(is_text_correct?(:dashboard, :firstEntryDescription, 
-         'Promotion (50 pages per month free for 1 month)').to_s)
-    
-    subscription_complete = true
+
+    is_text_correct?(:dashboard, :firstEntryDescription,
+                     'Promotion (50 pages per month free for 1 month)')
 
     click_Button(:dashboard, :signOut)
+
     sleep 2
+
     is_css_visible?(:landingPage, :signUpBlueButton)
 
   end
 
+
+
+
+  ##
+  # =>  IF the Subscription was completed we can Do more Detailed tests on the dash board
+  # => This test edits the shipping address and verifys that it was saved correctly 
+  #
   it "Can I edit the Shipping Address" do
     if subscription_complete
       
-      puts '### Edit Shipping Address ###'
+      puts '#########################################'
+      puts '######### Edit Shipping Address #########'
 
       launch_Landing_Page
       sleep 5
@@ -199,8 +319,8 @@ describe 'Testing Instant Ink' , :type => :feature do
 
       click_Button(:dashboard, :shippingBilling)
 
-      puts 'Shipping info:          '.concat(is_text_correct?(:dashboard, :shippingInfo, 
-           'Otto Tester 16399 West Bernardo Drive San Diego, CA 92127-1801').to_s)
+      is_text_correct?(:dashboard, :shippingInfo, 
+           'Otto Tester 16399 West Bernardo Drive San Diego, CA 92127-1801')
 
       click_Button(:dashboard, :editShipping)
 
@@ -216,23 +336,34 @@ describe 'Testing Instant Ink' , :type => :feature do
       has_page_finished_loading?(:dashboard, :shippingBilling)
       click_Button(:dashboard, :shippingBilling)
 
-      puts 'Shipping info Updated: '.concat(is_text_correct?(:dashboard, :shippingInfo, 
-           'Autto Mation 500 Sea World Dr San Diego, CA 92109-7904').to_s)
+      is_text_correct?(:dashboard, :shippingInfo, 
+           'Autto Mation 500 Sea World Dr San Diego, CA 92109-7904')
 
       click_Button(:dashboard, :signOut)
       has_page_finished_loading?(:landingPage, :signUpBlueButton)
     end
   end
 
+
+
+  ##
+  # => Deconstruction Test
+  # => Redeems the Enrollment Key and obsoletes the subscription 
+  #
   it 'Cleaning up the Smoke Test' do
-    if subscription_complete 
-      puts '### UNREDEEMING ENROLLMENT KEY ###'
+    if subscription_complete \
+
+      puts '#########################################'
+      puts '###### UNREDEEMING ENROLLMENT KEY #######'
       agena_Sign_In
       unRedeem_Enrollment_Key
-      puts '###  OBSOLETING SUBSCRIPTION   ###'
+
+      puts '#########################################'
+      puts '######  OBSOLETING SUBSCRIPTION   #######'
+      puts '#########################################'
       gemini_Sign_In
       obsolete_Subscription(account_number)
+    
     end
   end
-
 end
