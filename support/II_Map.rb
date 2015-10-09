@@ -57,10 +57,13 @@ module II_Map
 			sfNameOnCard:          '//*[@id="billing_form_content"]/div[1]/div[2]/div/input',
 			sfCardNumber:          '//*[@id="billing_form_content"]/div[1]/div[3]/div/input',
 			sfExpirationDropDown:  '//*[@id="s2id_autogen1"]/a',
-			sf_12th_month:         '//*[@id="billing_form_content"]/div[1]/div[5]/div/div/select[1]/option[13]',
+			sf_12th_month:         '//*[@id="select2-results-2"]/li[13]',
 			sfYearDropDown:        '//*[@id="s2id_autogen3"]/a',
-			sf_Year_2034:          '//*[@id="billing_form_content"]/div[1]/div[5]/div/div/select[2]/option[21]',
-			sfCVV:                 '//*[@id="billing_form_content"]/div[1]/div[7]/div[1]/input'
+			sf_Year_2034:          '//*[@id="select2-results-4"]/li[21]',
+			sfCVV:                 '//*[@id="billing_form_content"]/div[1]/div[7]/div[1]/input',
+			sfSameAsShipping:      '//*[@id="billing_form_content"]/div[2]/div[2]/div/div/label',
+			sfPhoneNumber:         '//*[@id="billing_form_content"]/div[2]/div[7]/div/input',
+			sfSaveAndContinue:     '//*[@id="billing_form_confirm_btn_box"]/div/span/button[2]'
 		},
 		reviewPage:{
 			planText:           '/html/body/div[6]/div/div[3]/div/div[1]/ol/li[1]/div[2]',

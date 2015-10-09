@@ -94,6 +94,9 @@ describe 'Testing Instant Ink' , :type => :feature do
         select_item_from_dropdown(:billingPage, :sfExpirationDropDown ,:sf_12th_month)
         select_item_from_dropdown(:billingPage, :sfYearDropDown ,:sf_Year_2034)
         fill_In(:billingPage, :sfCVV ,'150')
+        click_Button(:billingPage, :sfSameAsShipping)
+        fill_In(:billingPage, :sfPhoneNumber, '6195555555')
+        click_Button(:billingPage, :sfSaveAndContinue)
       end
     end
    
