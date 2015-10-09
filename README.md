@@ -47,6 +47,35 @@ Current Tests:
 :smoke['browser','stack']
 :basic(does not test anything but used as a trial test to test new content before makeing an actual tests from it)
 	
+# Running the Tests through Task Scheduler (Windows OS)
+
+A logs folder was created to store the log files for the test automation, but all logs are not to be push to the repo thus they were added to the gitignore
+
+With in the Logs folder create a log file for pie1 and test1 named:
+pie1_test.log
+test1_test.log
+
+Note :The rake integration:smoke task was updated to apped the test results to the corresponding file
+
+In order to make a new Task for the Task Scheduler you need to make a .bat file
+in the root directory create a file named: pie1.bat
+
+NOTE: all .bat files in the root directory were added to the gitignore
+
+add this to the .bat file:
+
+@echo off
+cd """PATH TO ROOT DIRECTORY WITH QUOATATION MARKS IF PATH CONTAINS ANY SPACES"""
+      example: cd "C:\Users\Instant Ink\Desktop\Ruby\II_Auto"
+cls
+call rake integration:smoke['ie','pie1']
+exit
+
+NOTES: you can make the two parameters into variables and they can be passed in with the Task Scheduler, but i have not done        the resaerch to figre it out at the  moment
+
+In Task Scheduler click on the create Task on the right hand side and fill out the info to run the test and a schedule timed interval. 
+
+
 
 
 
