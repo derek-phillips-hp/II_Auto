@@ -24,6 +24,17 @@ module RailsAdmin_Map
 		obsoleteSub:{
 			obsolete: '/html/body/div[2]/div/div[2]/div[2]/div/a[1]',
 			status:   '/html/body/div[2]/div/div[2]/div/div[2]/dl/dd[4]'
+		},
+		subscription_query:{
+			id_link: '//*[@id="bulk_form"]/table/tbody/tr/td[2]/a'
+		},
+		subscription_edit:{
+			printer_contacted: '//*[@id="subscription_printer_contacted"]',
+			page_count:        '//*[@id="subscription_subscription_page_count_during_first_contact"]',
+			event_shift:       '//*[@id="subscription_rollback"]',
+			state:             '//*[@id="subscription_state_event"]',
+			trans_to_sub:      '//*[@id="subscription_state_event"]/option[3]',
+			save_and_exit:     '//*[@id="edit_subscription"]/div/div/button'
 		}
 	}
 
