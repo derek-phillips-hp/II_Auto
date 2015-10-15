@@ -39,6 +39,7 @@ describe 'Testing Instant Ink' , :type => :feature do
   after :all do
     puts ''
     puts "Smoke Test on stack: #{ENV['STACK']}" 
+    puts "Test Ran at :" + Time.now.asctime
     puts 'User Email: ' + user_name
     puts 'Account Number: ' + account_number
     puts "Enrollment Key: #{ENV['ENROLLMENT_KEY']}"
