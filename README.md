@@ -20,9 +20,18 @@ After you make a clone of this project. Go to the root directory of the project
   * make sure you start with a ; 
 
 For Internet Explorer Driver 
+
 	- you need to add the websites urls to the Trusted sites list under Security in Interne Options. This includes the regular landing page on all stacks, webauth on all stacks, and the pgs fourm.
+	
 	- You will also need to add a few items to regedit. Go to https://code.google.com/p/selenium/wiki/InternetExplorerDriver#Required_Configuration and follow the directions under REquired configurations
+	
 	- you will need to add a DWORD iexplore.exe to FEATURE_HTTP_USERNAME_PASSWORD_DISABLE which is located in the same path as the one listed in the url above
+	
+	- wait theres more....
+	 
+	- For troubleshooting IE : https://github.com/seleniumQuery/seleniumQuery/wiki/seleniumQuery-and-IE-Driver
+	- the protection mode and the browser size is very important. The tests work at 100% because the driver is assuming 100% and will crash otherwise. 
+	
 
 
 Message Michael Aranda to recieve the environment.rb file.
@@ -51,7 +60,7 @@ Current Tests:
 :smoke['browser','stack']
 :basic(does not test anything but used as a trial test to test new content before makeing an actual tests from it)
 	
-# Running the Tests through Task Scheduler (Windows OS)
+# Running the Tests through Task Scheduler (Windows OS) (Buggy!@#!@$!@#)
 
 A logs folder was created to store the log files for the test automation, but all logs are not to be push to the repo thus they were added to the gitignore
 
