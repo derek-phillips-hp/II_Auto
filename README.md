@@ -69,11 +69,16 @@ NOTE: all .bat files in the root directory were added to the gitignore
 add this to the .bat file:
 
 @echo off
+
 cd """PATH TO ROOT DIRECTORY WITH QUOATATION MARKS IF PATH CONTAINS ANY SPACES"""
       example: cd "C:\Users\Instant Ink\Desktop\Ruby\II_Auto"
+      
 cls
+
 call rake integration:smoke['ie','pie1']
+
 exit
+
 
 NOTES: you can make the two parameters into variables and they can be passed in with the Task Scheduler, but i have not done        the resaerch to figre it out at the  moment
 
