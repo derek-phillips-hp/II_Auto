@@ -37,6 +37,7 @@ describe 'Testing Instant Ink' , :type => :feature do
   # => Prints out info gathered through out the test if aviable 
   #
   after :all do
+    
     puts ''
     puts "Smoke Test on stack: #{ENV['STACK']}" 
     puts "Test Ran at :" + Time.now.asctime
@@ -189,7 +190,7 @@ describe 'Testing Instant Ink' , :type => :feature do
     #
 
 
-    has_page_finished_loading?(:reviewPage, :planText)
+   # has_page_finished_loading?(:reviewPage, :planText)
 
     is_text_correct?(:reviewPage, :planText, 
                      '$2.99 per month for 50 pages, +$1.00 for each additional set of 15 pages' )
@@ -261,6 +262,8 @@ describe 'Testing Instant Ink' , :type => :feature do
 
     click_Button(:dashboard, :shippingBilling)
 
+    sleep 1
+
     is_text_correct?(:dashboard, :shippingInfo,
                      'Otto Tester 16399 West Bernardo Drive San Diego, CA 92127-1801')
 
@@ -271,7 +274,6 @@ describe 'Testing Instant Ink' , :type => :feature do
       is_text_correct?(:dashboard, :billingInfo, 
                      'Credit Card Visa xxxx-1111 Otto 16399 West Bernardo Drive San Diego, CA 92127-1801 (619) 555-5555 Edit')
     end
-    click_Button(:dashboard, :shippingBilling)
 
     sleep 1
 
@@ -281,10 +283,6 @@ describe 'Testing Instant Ink' , :type => :feature do
 
     is_text_correct?(:dashboard, :planInfo,
                      'Monthly pages 50 Rollover Pages Up to 50 Additional pages Set of 15 pages for $1.00 2 months remaining with no charge for regular pages')
-    
-    sleep 1
-
-    click_Button(:dashboard, :myPlan)
 
     sleep 1
 
@@ -292,10 +290,6 @@ describe 'Testing Instant Ink' , :type => :feature do
 
     is_text_correct?(:dashboard, :firstEntryDescription,
                      'Promotion (50 pages per month free for 1 month)')
-    
-    sleep 1
-    
-    click_Button(:dashboard, :activity)
    
     sleep 1
     
@@ -333,8 +327,6 @@ describe 'Testing Instant Ink' , :type => :feature do
         end
       end
 
-      click_Button(:dashboard, :shippingBilling)
-
       is_text_correct?(:dashboard, :shippingInfo, 
            'Otto Tester 16399 West Bernardo Drive San Diego, CA 92127-1801')
 
@@ -354,7 +346,6 @@ describe 'Testing Instant Ink' , :type => :feature do
       is_text_correct?(:dashboard, :shippingInfo, 
            'Autto Mation 500 Sea World Dr San Diego, CA 92109-7904')
       
-      click_Button(:dashboard, :shippingBilling)
       click_Button(:dashboard, :signOut)
       has_page_finished_loading?(:landingPage, :signUpBlueButton)
     end
@@ -372,12 +363,14 @@ describe 'Testing Instant Ink' , :type => :feature do
       puts '#########################################'
       puts '###### UNREDEEMING ENROLLMENT KEY #######'
       agena_Sign_In
+      sleep 3
       unRedeem_Enrollment_Key
-
+      sleep 3
       puts '#########################################'
       puts '######  OBSOLETING SUBSCRIPTION   #######'
       puts '#########################################'
       gemini_Sign_In
+      sleep 3
       obsolete_Subscription(account_number)
     
     end

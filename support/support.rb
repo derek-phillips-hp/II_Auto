@@ -266,11 +266,11 @@ module Support
 	# Overrides the javascript created checkbox that Selenium can not trigger 
 	# only effects Chrome and Firefox, IE works fine
 	def create_User_Terms_Checkbox
-		if (ENV['BROWSER_TYPE'] == 'chrome' or ENV['BROWSER_TYPE'] == 'firefox')
+		#if (ENV['BROWSER_TYPE'] == 'chrome' or ENV['BROWSER_TYPE'] == 'firefox')
 			page.driver.execute_script("document.getElementById('termsOptin').checked = true")
-		else
-			check 'termsOptin'
-		end
+		#else
+			#find(:xpath, '//*[@id="termsOptin"]').set(true)
+		#end
 	end
 
 	# Adds a virtual local printer on test1 and pie1 
