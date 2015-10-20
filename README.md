@@ -84,7 +84,7 @@ cd """PATH TO ROOT DIRECTORY WITH QUOATATION MARKS IF PATH CONTAINS ANY SPACES""
       
 cls
 
-call rake integration:smoke['ie','pie1']
+call rake integration:smoke_v['ie','pie1']
 
 exit
 
